@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('bio')->nullable(true)->default(null);
             $table->string('image')->nullable(true)->default(null);
             $table->string('provider');
-            $table->string('role_id');
-            $table->boolean('banned');
+            $table->enum('role', ['default', 'premium', 'admin']);
+            $table->boolean('banned')->default(false);
             $table->string('age')->nullable(true)->default(null);
             $table->string('gender')->nullable(true)->default(null);
             $table->string('country')->nullable(true)->default(null);
