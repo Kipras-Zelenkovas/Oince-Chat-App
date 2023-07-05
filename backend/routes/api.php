@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Authentication\SiteAuthentication;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('register', [SiteAuthentication::class, 'register'])->middleware('guest')->name('register');
+    Route::post('login', [SiteAuthentication::class, 'login'])->middleware('guest')->name('login');
+    Route::post('logout', [SiteAuthentication::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
