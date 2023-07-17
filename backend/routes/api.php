@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Authentication\SiteAuthentication;
+use App\Http\Controllers\Friends\Friends;
+use App\Http\Controllers\User\Updates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +26,16 @@ Route::prefix('auth')->group(function () {
     Route::post('login', [SiteAuthentication::class, 'login'])->middleware('guest')->name('login');
     Route::post('logout', [SiteAuthentication::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 });
+
+Route::prefix('user')->group(function () {
+    Route::put('update', [Updates::class, 'update'])->middleware('auth:sanctum')->name('update');
+    Route::get('friend_list', [Friends::class, 'friend_list'])->middleware('auth:sanctum')->name('friend_list');
+    Route::get('friend_requests', [Friends::class, 'friend_requests'])->middleware('auth:sanctum')->name('friend_requests');
+
+
+    Route::post('friend_request', [Friends::class, 'send_request'])->middleware('auth:sanctum')->name('send_request');
+    Route::put('friend_accept', [Friends::class, 'accept_request'])->middleware('auth:sanctum')->name('accept_request');
+});
+
+
+Route::get('test', [Friends::class, 'test'])->middleware('auth:sanctum')->name('test');
