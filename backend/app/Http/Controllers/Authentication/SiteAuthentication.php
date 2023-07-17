@@ -54,7 +54,7 @@ class SiteAuthentication extends Controller
                 ]);
             }
 
-            $token = $user->createToken($validated['device_name'])->plainTextToken;
+            $token = $user->createToken($validated['device_name'] . rand(1569, 945214))->plainTextToken;
 
             return response()->json([
                 'status'    => true,
