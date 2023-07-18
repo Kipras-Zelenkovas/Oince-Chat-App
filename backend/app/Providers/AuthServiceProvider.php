@@ -25,5 +25,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         Gate::define('isRequested', [Friends::class, 'isRequested']);
         Gate::define('isAccepted', [Friends::class, 'isAccepted']);
+        Gate::define('isBlocked', [Friends::class, 'isBlocked']);
     }
 }

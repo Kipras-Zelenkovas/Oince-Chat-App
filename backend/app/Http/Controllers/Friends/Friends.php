@@ -39,6 +39,20 @@ class Friends extends Controller
         }
     }
 
+    public function blocked_list(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            $blocked_list = FriendsModel::where('status', FriendsEnum::Blocked)->where('user_1', $user->id)
+                ->orWhere('status', FriendsEnum::Blocked)->where('user_2', $user->id)->get();
+
+            return response()->json($blocked_list);
+        } catch (\Throwable $th) {
+            return response()->json("Something went wrong");
+        }
+    }
+
     public function send_request(Request $request)
     {
         try {
@@ -87,7 +101,41 @@ class Friends extends Controller
                 return response()->json("You are already friends");
             }
         } catch (\Throwable $th) {
+            return response()->json("Something went wrong");
+        }
+    }
+
+    public function block(Request $request)
+    {
+        try {
+            if (Gate::allows('isBlocked', [$request->user_to])) {
+                $user = $request->user();
+
+                $friend_block = FriendsModel::where('status', FriendsEnum::Friends)->where('user_1', $user->id)
+                    ->where('user_2', $request->user_to)->orWhere('status', FriendsEnum::Friends)->where('user_1', $request->user_to)
+                    ->where('user_2', $user->id)->first();
+
+                $friend_block->status = FriendsEnum::Blocked;
+
+                $friend_block->save();
+
+                return response()->json([
+                    'stauts'    => true,
+                    'message'   => 'User successfuly blocked'
+                ], 200);
+            } else {
+                return response()->json("You already blocked user");
+            }
+        } catch (\Throwable $th) {
             return response()->json($th->getMessage());
+        }
+    }
+
+    public function cancle_request(Request $request)
+    {
+        try {
+        } catch (\Throwable $th) {
+            return response()->json("Something went wrong");
         }
     }
 
