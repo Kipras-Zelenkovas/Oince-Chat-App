@@ -31,6 +31,7 @@ Route::prefix('user')->group(function () {
     Route::put('update', [Updates::class, 'update'])->middleware('auth:sanctum')->name('update');
     Route::get('friend_list', [Friends::class, 'friend_list'])->middleware('auth:sanctum')->name('friend.list');
     Route::get('friend_requests', [Friends::class, 'friend_requests'])->middleware('auth:sanctum')->name('friend.requests');
+    Route::get('blocked_list', [Friends::class, 'blocked_list'])->middleware('auth:sanctum')->name('blocked.list');
 
 
     Route::post('friend_request', [Friends::class, 'send_request'])->middleware('auth:sanctum')->name('send.request');

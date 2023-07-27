@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignUuid('user_1');
             $table->foreignUuid('user_2');
             $table->enum('status', ['request', 'friends', 'blocked']);
+            $table->foreignUuid('user_banned')->nullable()->default(null);
             $table->timestamps();
         });
     }

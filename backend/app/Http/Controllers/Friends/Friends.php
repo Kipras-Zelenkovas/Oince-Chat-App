@@ -44,8 +44,7 @@ class Friends extends Controller
         try {
             $user = $request->user();
 
-            $blocked_list = FriendsModel::where('status', FriendsEnum::Blocked)->where('user_1', $user->id)
-                ->orWhere('status', FriendsEnum::Blocked)->where('user_2', $user->id)->get();
+            $blocked_list = FriendsModel::where('status', FriendsEnum::Blocked)->where('user_banned', $user->id)->get();
 
             return response()->json($blocked_list);
         } catch (\Throwable $th) {
@@ -116,6 +115,7 @@ class Friends extends Controller
                     ->where('user_2', $user->id)->first();
 
                 $friend_block->status = FriendsEnum::Blocked;
+                $friend_block->user_banned = $user->id;
 
                 $friend_block->save();
 
