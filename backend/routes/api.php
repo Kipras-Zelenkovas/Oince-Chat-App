@@ -29,16 +29,19 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::put('update', [Updates::class, 'update'])->middleware('auth:sanctum')->name('update');
-    Route::get('friend_list', [Friends::class, 'friend_list'])->middleware('auth:sanctum')->name('friend.list');
-    Route::get('friend_requests', [Friends::class, 'friend_requests'])->middleware('auth:sanctum')->name('friend.requests');
-    Route::get('blocked_list', [Friends::class, 'blocked_list'])->middleware('auth:sanctum')->name('blocked.list');
+
+    Route::prefix('friends')->group(function () {
+        Route::get('list', [Friends::class, 'friend_list'])->middleware('auth:sanctum')->name('friend.list');
+        Route::get('requests', [Friends::class, 'friend_requests'])->middleware('auth:sanctum')->name('friend.requests');
+        Route::get('blocked', [Friends::class, 'blocked_list'])->middleware('auth:sanctum')->name('blocked.list');
 
 
-    Route::post('friend_request', [Friends::class, 'send_request'])->middleware('auth:sanctum')->name('send.request');
-    Route::put('friend_accept', [Friends::class, 'accept_request'])->middleware('auth:sanctum')->name('accept.request');
-    Route::put('friend_block', [Friends::class, 'block'])->middleware('auth:sanctum')->name('friend.block');
+        Route::post('request', [Friends::class, 'send_request'])->middleware('auth:sanctum')->name('send.request');
+        Route::put('accept', [Friends::class, 'accept_request'])->middleware('auth:sanctum')->name('accept.request');
+        Route::put('block', [Friends::class, 'block'])->middleware('auth:sanctum')->name('friend.block');
 
-    Route::post('cancle_request', [Friends::class, 'cancle_request'])->middleware('auth:sanctum')->name('cancle.request');
-    Route::post('cancle_friendship', [Friends::class, 'cancle_friendship'])->middleware('auth:sanctum')->name('cancle.friendship');
-    Route::put('unblock_user', [Friends::class, 'unblock'])->middleware('auth:sanctum')->name('unblock.user');
+        Route::post('cancle_request', [Friends::class, 'cancle_request'])->middleware('auth:sanctum')->name('cancle.request');
+        Route::post('cancle_friendship', [Friends::class, 'cancle_friendship'])->middleware('auth:sanctum')->name('cancle.friendship');
+        Route::put('unblock', [Friends::class, 'unblock'])->middleware('auth:sanctum')->name('unblock.user');
+    });
 });
