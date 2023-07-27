@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Authentication\SiteAuthentication;
 use App\Http\Controllers\Friends\Friends;
+use App\Http\Controllers\User\ResetPassword;
 use App\Http\Controllers\User\Updates;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,10 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('user')->group(function () {
     Route::put('update', [Updates::class, 'update'])->middleware('auth:sanctum')->name('update');
+    Route::prefix('password')->group(function () {
+        Route::post('forgot', [ResetPassword::class, 'forgot_password'])->middleware('guest')->name('forgot.password');
+        Route::post('reset', [ResetPassword::class, 'reset_password'])->middleware('guest')->name('reset.password');
+    });
 
     Route::prefix('friends')->group(function () {
         Route::get('list', [Friends::class, 'friend_list'])->middleware('auth:sanctum')->name('friend.list');
