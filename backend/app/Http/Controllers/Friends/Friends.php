@@ -134,8 +134,61 @@ class Friends extends Controller
     public function cancle_request(Request $request)
     {
         try {
+            $user = $request->user();
+
+            $cancle_request = FriendsModel::where('status', FriendsEnum::Request)->where('user_1', $user->id)->where('user_2', $request->user_2)
+                ->orWhere('status', FriendsEnum::Request)->where('user_1', $request->user_2)->where('user_2', $user->id)->first();
+
+            $cancle_request->delete();
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'Request successfully deleted'
+            ], 200);
         } catch (\Throwable $th) {
             return response()->json("Something went wrong");
+        }
+    }
+
+    public function cancle_friendship(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            $cancle_friendship = FriendsModel::where('status', FriendsEnum::Friends)->where('user_1', $user->id)->where('user_2', $request->user_2)
+                ->orWhere('status', FriendsEnum::Friends)->where('user_1', $request->user_2)->where('user_2', $user->id)->first();
+
+            $cancle_friendship->delete();
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'Friendship successfully deleted'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json("Something went wrong");
+        }
+    }
+
+    public function unblock(Request $request)
+    {
+        try {
+            $user = $request->user();
+
+            $unblock_user = FriendsModel::where('status', FriendsEnum::Blocked)->where('user_1', $user->id)->where('user_2', $request->user_2)
+                ->where('user_banned', $user->id)->orWhere('status', FriendsEnum::Blocked)->where('user_1', $request->user_2)->where('user_2', $user->id)
+                ->where('user_banned', $user->id)->first();
+
+            $unblock_user->status = FriendsEnum::Friends;
+            $unblock_user->user_banned = "";
+
+            $unblock_user->save();
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'User successfuly unblocked'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
         }
     }
 
