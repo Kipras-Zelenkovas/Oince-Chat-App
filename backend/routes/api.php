@@ -42,6 +42,3 @@ Route::prefix('user')->group(function () {
     Route::post('cancle_friendship', [Friends::class, 'cancle_friendship'])->middleware('auth:sanctum')->name('cancle.friendship');
     Route::put('unblock_user', [Friends::class, 'unblock'])->middleware('auth:sanctum')->name('unblock.user');
 });
-
-
-Route::get('test', [Friends::class, 'test'])->middleware('auth:sanctum')->name('test');

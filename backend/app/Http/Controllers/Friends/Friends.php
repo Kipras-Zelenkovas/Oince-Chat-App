@@ -191,16 +191,4 @@ class Friends extends Controller
             return response()->json($th->getMessage());
         }
     }
-
-
-
-
-    public function test(Request $request)
-    {
-        if (Gate::allows('isAccepted', [$request->to])) {
-            return response("ne");
-        } else {
-            return response("jau");
-        }
-    }
 }
