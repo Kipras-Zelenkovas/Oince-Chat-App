@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Authentication\SiteAuthentication;
 use App\Http\Controllers\Friends\Friends;
+use App\Http\Controllers\Group\CRUD;
 use App\Http\Controllers\User\ResetPassword;
 use App\Http\Controllers\User\Updates;
 use Illuminate\Http\Request;
@@ -49,4 +50,10 @@ Route::prefix('user')->group(function () {
         Route::post('cancle_friendship', [Friends::class, 'cancle_friendship'])->middleware('auth:sanctum')->name('cancle.friendship');
         Route::put('unblock', [Friends::class, 'unblock'])->middleware('auth:sanctum')->name('unblock.user');
     });
+});
+
+Route::prefix('group')->group(function () {
+    Route::post('', [CRUD::class, 'create'])->middleware('auth:sanctum')->name('create.group');
+    Route::put('', [CRUD::class, 'update'])->middleware('auth:sanctum')->name('update.group');
+    Route::delete('', [CRUD::class, 'delete'])->middleware('auth:sanctum')->name('delete.group');
 });

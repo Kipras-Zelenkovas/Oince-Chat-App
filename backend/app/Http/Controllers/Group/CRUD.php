@@ -1,0 +1,79 @@
+<?php
+
+namespace App\Http\Controllers\Group;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Group\Create_Update;
+use App\Models\Groups\Group;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
+class CRUD extends Controller
+{
+
+    public function create(Create_Update $request)
+    {
+        try {
+            $user = $request->user();
+            $request->validated();
+
+            $newGroup = Group::create([
+                'owner'     => $user->id,
+                'name'      => $request->name,
+                'image'     => $request->img ? $request->img : null,
+                'status'    => $request->status,
+                'tags'      => $request->tags
+            ]);
+
+            $newGroup->save();
+
+            return response()->json([
+                'status'    => true,
+                'message'   => 'You successfully created a group'
+            ], 201);
+        } catch (\Throwable $th) {
+            return response()->json('Something went wrong');
+        }
+    }
+
+    public function update(Create_Update $request)
+    {
+        try {
+            $validated = $request->safe()->except('id');
+            $group = Group::find($request->id);
+
+            if (Gate::allows('groupOwner', [$group]) && !Gate::allows('groupDeleted', [$group])) {
+                Group::where('id', $request->id)->update($validated);
+
+                return response()->json([
+                    'status'    => true,
+                    'message'   => 'Groups parameters are successfully updated'
+                ], 201);
+            } else {
+                return response()->json('This function is not available for you', 401);
+            }
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        try {
+            $group = Group::find($request->id);
+
+            if (Gate::allows('groupOwner', [$group])) {
+                Group::where('id', $request->id)->update(['status' => 'deleted']);
+
+                return response()->json([
+                    'status'    => true,
+                    'message'   => 'Group is successfully deleted'
+                ], 201);
+            } else {
+                return response()->json('This function is not available for you', 401);
+            }
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage());
+        }
+    }
+}
