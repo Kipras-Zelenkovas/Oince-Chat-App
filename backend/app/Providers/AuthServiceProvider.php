@@ -31,6 +31,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('isBlocked', [Friends::class, 'isBlocked']);
 
         Gate::define('groupOwner', [Groups::class, 'isOwner']);
+        Gate::define('groupOpen', [Groups::class, 'isOpen']);
+        Gate::define('groupPrivate', [Groups::class, 'isPrivate']);
         Gate::define('groupDeleted', [Groups::class, 'isDeleted']);
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {

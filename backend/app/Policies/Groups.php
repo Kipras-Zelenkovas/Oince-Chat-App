@@ -23,4 +23,14 @@ class Groups
     {
         return $group->status === 'deleted';
     }
+
+    public function isOpen(User $user, Group $group)
+    {
+        return $group->status === 'open';
+    }
+
+    public function isPrivate(User $user, Group $group)
+    {
+        return $group->status === 'private';
+    }
 }
