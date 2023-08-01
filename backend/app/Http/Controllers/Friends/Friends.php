@@ -21,7 +21,7 @@ class Friends extends Controller
 
             return response()->json($friends_list);
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -35,7 +35,7 @@ class Friends extends Controller
 
             return response()->json($friends_requests);
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -48,7 +48,7 @@ class Friends extends Controller
 
             return response()->json($blocked_list);
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -74,7 +74,7 @@ class Friends extends Controller
                 return response()->json("Friend request is already sent or you are already friends");
             }
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -100,7 +100,7 @@ class Friends extends Controller
                 return response()->json("You are already friends");
             }
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -127,7 +127,7 @@ class Friends extends Controller
                 return response()->json("You already blocked user");
             }
         } catch (\Throwable $th) {
-            return response()->json($th->getMessage());
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -146,7 +146,7 @@ class Friends extends Controller
                 'message'   => 'Request successfully deleted'
             ], 200);
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -165,7 +165,7 @@ class Friends extends Controller
                 'message'   => 'Friendship successfully deleted'
             ], 200);
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong");
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -188,7 +188,7 @@ class Friends extends Controller
                 'message'   => 'User successfuly unblocked'
             ], 200);
         } catch (\Throwable $th) {
-            return response()->json($th->getMessage());
+            return response()->json("Something went wrong", 500);
         }
     }
 }

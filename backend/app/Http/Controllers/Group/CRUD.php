@@ -32,7 +32,7 @@ class CRUD extends Controller
                 'message'   => 'You successfully created a group'
             ], 201);
         } catch (\Throwable $th) {
-            return response()->json('Something went wrong');
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -53,7 +53,7 @@ class CRUD extends Controller
                 return response()->json('This function is not available for you', 401);
             }
         } catch (\Throwable $th) {
-            return response()->json($th->getMessage());
+            return response()->json("Something went wrong", 500);
         }
     }
 
@@ -73,7 +73,7 @@ class CRUD extends Controller
                 return response()->json('This function is not available for you', 401);
             }
         } catch (\Throwable $th) {
-            return response()->json($th->getMessage());
+            return response()->json("Something went wrong", 500);
         }
     }
 }
