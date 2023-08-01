@@ -3,6 +3,7 @@
 use App\Http\Controllers\Authentication\SiteAuthentication;
 use App\Http\Controllers\Friends\Friends;
 use App\Http\Controllers\Group\CRUD;
+use App\Http\Controllers\Group\Get;
 use App\Http\Controllers\User\ResetPassword;
 use App\Http\Controllers\User\Updates;
 use Illuminate\Http\Request;
@@ -53,6 +54,10 @@ Route::prefix('user')->group(function () {
 });
 
 Route::prefix('group')->group(function () {
+
+    Route::get('', [Get::class, 'get'])->middleware('auth:sanctum')->name('get.groups');
+    Route::get('find', [Get::class, 'find'])->middleware('auth:sanctum')->name('find.group');
+
     Route::post('', [CRUD::class, 'create'])->middleware('auth:sanctum')->name('create.group');
     Route::put('', [CRUD::class, 'update'])->middleware('auth:sanctum')->name('update.group');
     Route::delete('', [CRUD::class, 'delete'])->middleware('auth:sanctum')->name('delete.group');
