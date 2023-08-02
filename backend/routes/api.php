@@ -5,6 +5,7 @@ use App\Http\Controllers\Friends\Friends;
 use App\Http\Controllers\Group\CRUD;
 use App\Http\Controllers\Group\Get;
 use App\Http\Controllers\Group\Join;
+use App\Http\Controllers\Group\Users;
 use App\Http\Controllers\User\ResetPassword;
 use App\Http\Controllers\User\Updates;
 use Illuminate\Http\Request;
@@ -63,8 +64,13 @@ Route::prefix('group')->group(function () {
     Route::put('', [CRUD::class, 'update'])->middleware('auth:sanctum')->name('update.group');
     Route::delete('', [CRUD::class, 'delete'])->middleware('auth:sanctum')->name('delete.group');
 
+    Route::get('requesters', [Users::class, 'requesters'])->middleware('auth:sanctum')->name('requesters.group');
     Route::prefix('members')->group(function () {
+        Route::get('', [Users::class, 'members'])->middleware('auth:sanctum')->name('members.group');
+        Route::get('banned', [Users::class, 'banned'])->middleware('auth:sanctum')->name('banned.group');
+
         Route::post('join', [Join::class, 'join'])->middleware('auth:sanctum')->name('join.group');
         Route::put('accept', [Join::class, 'accept'])->middleware('auth:sanctum')->name('accept.member');
+        Route::put('ban', [Users::class, 'ban'])->middleware('auth:sanctum')->name('ban.member');
     });
 });
