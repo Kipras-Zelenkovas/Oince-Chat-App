@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Policies\Friends;
 use App\Policies\Groups;
+use App\Policies\GroupUsers;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -34,6 +35,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('groupOpen', [Groups::class, 'isOpen']);
         Gate::define('groupPrivate', [Groups::class, 'isPrivate']);
         Gate::define('groupDeleted', [Groups::class, 'isDeleted']);
+
+        Gate::define('userInGroup', [GroupUsers::class, 'inGroup']);
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://localhost:5173/reset-password?token=' . $token . '&email=' . $user->email;

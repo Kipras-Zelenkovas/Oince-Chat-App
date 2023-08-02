@@ -18,39 +18,43 @@ class Join extends Controller
             $user = $request->user();
             $group = Group::find($request->id);
 
-            if (Gate::allows('groupOpen', [$group])) {
-                $member = Group_users::create([
-                    'group_id'  => $request->id,
-                    'user_id'   => $user->id,
-                    'role_id'   => 1, //For testing purposes
-                    'status'    => GroupUsersEnum::MEMBER,
-                ]);
+            if (!Gate::allows('userInGroup', [$group])) {
+                if (Gate::allows('groupOpen', [$group])) {
+                    $member = Group_users::create([
+                        'group_id'  => $request->id,
+                        'user_id'   => $user->id,
+                        'role_id'   => 1, //For testing purposes
+                        'status'    => GroupUsersEnum::MEMBER,
+                    ]);
 
-                $member->save();
+                    $member->save();
 
-                return response()->json([
-                    'status'    => true,
-                    'message'   => 'You successfully join a group'
-                ], 201);
-            } elseif (Gate::allows('groupPrivate', [$group])) {
-                $requester = Group_users::create([
-                    'group_id'  => $request->id,
-                    'user_id'   => $user->id,
-                    'role_id'   => 1, //For testing purposes
-                    'status'    => GroupUsersEnum::REQUEST,
-                ]);
+                    return response()->json([
+                        'status'    => true,
+                        'message'   => 'You successfully join a group'
+                    ], 201);
+                } elseif (Gate::allows('groupPrivate', [$group])) {
+                    $requester = Group_users::create([
+                        'group_id'  => $request->id,
+                        'user_id'   => $user->id,
+                        'role_id'   => 1, //For testing purposes
+                        'status'    => GroupUsersEnum::REQUEST,
+                    ]);
 
-                $requester->save();
+                    $requester->save();
 
-                return response()->json([
-                    'status'    => true,
-                    'message'   => 'You successfully sent request to join a group'
-                ], 201);
+                    return response()->json([
+                        'status'    => true,
+                        'message'   => 'You successfully sent request to join a group'
+                    ], 201);
+                } else {
+                    return response()->json([
+                        'status'    => true,
+                        'message'   => 'Group joining is temporary disabled'
+                    ], 403);
+                }
             } else {
-                return response()->json([
-                    'status'    => true,
-                    'message'   => 'Group joining is temporary disabled'
-                ], 403);
+                return response()->json("You can't send request to group");
             }
         } catch (\Throwable $th) {
             return response()->json($th->getMessage(), 500);
