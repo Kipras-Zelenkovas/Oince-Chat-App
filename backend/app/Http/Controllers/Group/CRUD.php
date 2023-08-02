@@ -40,10 +40,10 @@ class CRUD extends Controller
     {
         try {
             $validated = $request->safe()->except('id');
-            $group = Group::find($request->id);
+            $group = Group::find($request->group_id);
 
             if (Gate::allows('groupOwner', [$group]) && !Gate::allows('groupDeleted', [$group])) {
-                Group::where('id', $request->id)->update($validated);
+                Group::where('id', $request->group_id)->update($validated);
 
                 return response()->json([
                     'status'    => true,
@@ -60,10 +60,10 @@ class CRUD extends Controller
     public function delete(Request $request)
     {
         try {
-            $group = Group::find($request->id);
+            $group = Group::find($request->group_id);
 
             if (Gate::allows('groupOwner', [$group])) {
-                Group::where('id', $request->id)->update(['status' => 'deleted']);
+                Group::where('id', $request->group_id)->update(['status' => 'deleted']);
 
                 return response()->json([
                     'status'    => true,

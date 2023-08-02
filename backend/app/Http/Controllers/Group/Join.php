@@ -16,12 +16,12 @@ class Join extends Controller
     {
         try {
             $user = $request->user();
-            $group = Group::find($request->id);
+            $group = Group::find($request->group_id);
 
             if (!Gate::allows('userInGroup', [$group])) {
                 if (Gate::allows('groupOpen', [$group])) {
                     $member = Group_users::create([
-                        'group_id'  => $request->id,
+                        'group_id'  => $request->group_id,
                         'user_id'   => $user->id,
                         'role_id'   => 1, //For testing purposes
                         'status'    => GroupUsersEnum::MEMBER,
@@ -35,7 +35,7 @@ class Join extends Controller
                     ], 201);
                 } elseif (Gate::allows('groupPrivate', [$group])) {
                     $requester = Group_users::create([
-                        'group_id'  => $request->id,
+                        'group_id'  => $request->group_id,
                         'user_id'   => $user->id,
                         'role_id'   => 1, //For testing purposes
                         'status'    => GroupUsersEnum::REQUEST,
@@ -65,7 +65,7 @@ class Join extends Controller
     {
         try {
             $user = $request->user();
-            $group = Group::find($request->id);
+            $group = Group::find($request->group_id);
 
             if (Gate::allows('groupOwner', [$group])) {
                 Group_users::where('group_id', $group->id)->where('user_id', $request->user_id)->update(['status' => GroupUsersEnum::MEMBER]);

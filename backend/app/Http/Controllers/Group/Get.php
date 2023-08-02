@@ -47,10 +47,10 @@ class Get extends Controller
     {
         try {
             $request->validate([
-                'id'    => "required|uuid"
+                'group_id'    => "required|uuid"
             ]);
 
-            $group = Group::find($request->id);
+            $group = Group::find($request->group_id);
 
             return response()->json([
                 'status'    => true,
