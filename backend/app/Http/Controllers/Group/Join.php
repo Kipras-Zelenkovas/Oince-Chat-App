@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Group;
 
+use App\Enums\GroupRoles;
 use App\Enums\GroupUsersEnum;
 use App\Http\Controllers\Controller;
 use App\Models\Groups\Group;
@@ -23,7 +24,7 @@ class Join extends Controller
                     $member = Group_users::create([
                         'group_id'  => $request->group_id,
                         'user_id'   => $user->id,
-                        'role_id'   => 1, //For testing purposes
+                        'role'   => GroupRoles::Member,
                         'status'    => GroupUsersEnum::MEMBER,
                     ]);
 
@@ -37,7 +38,7 @@ class Join extends Controller
                     $requester = Group_users::create([
                         'group_id'  => $request->group_id,
                         'user_id'   => $user->id,
-                        'role_id'   => 1, //For testing purposes
+                        'role'   => GroupRoles::Member,
                         'status'    => GroupUsersEnum::REQUEST,
                     ]);
 

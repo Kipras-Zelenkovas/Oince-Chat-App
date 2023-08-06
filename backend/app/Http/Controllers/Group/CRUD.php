@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Group;
 
+use App\Enums\GroupRoles;
+use App\Enums\GroupUsersEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Group\Create_Update;
 use App\Models\Groups\Group;
+use App\Models\Groups\Group_users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -27,12 +30,21 @@ class CRUD extends Controller
 
             $newGroup->save();
 
+            $owner = Group_users::create([
+                'group_id'      => $newGroup->id,
+                'user_id'       => $user->id,
+                'role'          => GroupRoles::Admin,
+                'status'        => GroupUsersEnum::MEMBER,
+            ]);
+
+            $owner->save();
+
             return response()->json([
                 'status'    => true,
                 'message'   => 'You successfully created a group'
             ], 201);
         } catch (\Throwable $th) {
-            return response()->json("Something went wrong", 500);
+            return response()->json($th->getMessage(), 500);
         }
     }
 
