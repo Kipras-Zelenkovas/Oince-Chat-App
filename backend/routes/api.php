@@ -72,5 +72,8 @@ Route::prefix('group')->group(function () {
         Route::post('join', [Join::class, 'join'])->middleware('auth:sanctum')->name('join.group');
         Route::put('accept', [Join::class, 'accept'])->middleware('auth:sanctum')->name('accept.member');
         Route::put('ban', [Users::class, 'ban'])->middleware('auth:sanctum')->name('ban.member');
+        Route::put('unban', [Users::class, 'unban'])->middleware('auth:sanctum')->name('unban.member');
+        Route::put('makeAdmin', [Users::class, 'makeAdmin'])->middleware('auth:sanctum')->name('make.admin');
+        Route::put('makeMember', [Users::class, 'makeMember'])->middleware('auth:sanctum')->name('make.member');
     });
 });

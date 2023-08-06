@@ -24,7 +24,7 @@ class Join extends Controller
                     $member = Group_users::create([
                         'group_id'  => $request->group_id,
                         'user_id'   => $user->id,
-                        'role'   => GroupRoles::Member,
+                        'role'      => GroupRoles::Member,
                         'status'    => GroupUsersEnum::MEMBER,
                     ]);
 
@@ -38,7 +38,7 @@ class Join extends Controller
                     $requester = Group_users::create([
                         'group_id'  => $request->group_id,
                         'user_id'   => $user->id,
-                        'role'   => GroupRoles::Member,
+                        'role'      => GroupRoles::Member,
                         'status'    => GroupUsersEnum::REQUEST,
                     ]);
 
@@ -68,7 +68,7 @@ class Join extends Controller
             $user = $request->user();
             $group = Group::find($request->group_id);
 
-            if (Gate::allows('groupOwner', [$group])) {
+            if (Gate::allows('groupOwner', [$group]) || Gate::allows('groupAdmin', [$group])) {
                 Group_users::where('group_id', $group->id)->where('user_id', $request->user_id)->update(['status' => GroupUsersEnum::MEMBER]);
 
                 return response()->json([

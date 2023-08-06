@@ -26,4 +26,11 @@ class GroupUsers
             return false;
         }
     }
+
+    public function isAdmin(User $user, Group $group)
+    {
+        $admin = Group_users::where('group_id', $group->id)->where('user_id', $user->id)->first();
+
+        return $admin->role === 'admin';
+    }
 }

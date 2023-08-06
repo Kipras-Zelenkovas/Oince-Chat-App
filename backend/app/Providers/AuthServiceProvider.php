@@ -37,6 +37,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('groupDeleted', [Groups::class, 'isDeleted']);
 
         Gate::define('userInGroup', [GroupUsers::class, 'inGroup']);
+        Gate::define('groupAdmin', [GroupUsers::class, 'isAdmin']);
 
         ResetPassword::createUrlUsing(function (User $user, string $token) {
             return 'https://localhost:5173/reset-password?token=' . $token . '&email=' . $user->email;
