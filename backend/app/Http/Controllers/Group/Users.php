@@ -76,7 +76,11 @@ class Users extends Controller
             $group = Group::find($request->group_id);
 
             if (Gate::allows('groupOwner', [$group]) || Gate::allows('groupAdmin', [$group])) {
-                Group_users::where('group_id', $group->id)->where('user_id', $request->user_id)->update(['status' => GroupUsersEnum::BANNED]);
+                Group_users::where('group_id', $group->id)->where('user_id', $request->user_id)
+                    ->update([
+                        'status'     => GroupUsersEnum::BANNED,
+                        'ban_reason' => $request->ban_reason
+                    ]);
 
                 return response()->json([
                     'status'    => true,
@@ -96,7 +100,11 @@ class Users extends Controller
             $group = Group::find($request->group_id);
 
             if (Gate::allows('groupOwner', [$group]) || Gate::allows('groupAdmin', [$group])) {
-                Group_users::where('group_id', $group->id)->where('user_id', $request->user_id)->update(['status' => GroupUsersEnum::MEMBER]);
+                Group_users::where('group_id', $group->id)->where('user_id', $request->user_id)
+                    ->update([
+                        'status'     => GroupUsersEnum::MEMBER,
+                        'ban_reason' => ''
+                    ]);
 
                 return response()->json([
                     'status'    => true,
