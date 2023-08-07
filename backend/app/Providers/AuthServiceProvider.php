@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('isRequested', [Friends::class, 'isRequested']);
-        Gate::define('isAccepted', [Friends::class, 'isAccepted']);
+        Gate::define('isFriends', [Friends::class, 'isFriends']);
         Gate::define('isBlocked', [Friends::class, 'isBlocked']);
 
         Gate::define('groupOwner', [Groups::class, 'isOwner']);

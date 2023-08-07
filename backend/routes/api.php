@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Authentication\SiteAuthentication;
 use App\Http\Controllers\Friends\Friends;
+use App\Http\Controllers\Friends\Message;
 use App\Http\Controllers\Group\CRUD;
 use App\Http\Controllers\Group\Get;
 use App\Http\Controllers\Group\Join;
@@ -44,7 +45,7 @@ Route::prefix('user')->group(function () {
         Route::get('requests', [Friends::class, 'friend_requests'])->middleware('auth:sanctum')->name('friend.requests');
         Route::get('blocked', [Friends::class, 'blocked_list'])->middleware('auth:sanctum')->name('blocked.list');
 
-
+        Route::post('message', [Message::class, 'message'])->middleware('auth:sanctum')->name('message.friend');
         Route::post('request', [Friends::class, 'send_request'])->middleware('auth:sanctum')->name('send.request');
         Route::put('accept', [Friends::class, 'accept_request'])->middleware('auth:sanctum')->name('accept.request');
         Route::put('block', [Friends::class, 'block'])->middleware('auth:sanctum')->name('friend.block');

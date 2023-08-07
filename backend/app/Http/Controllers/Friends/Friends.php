@@ -81,7 +81,7 @@ class Friends extends Controller
     public function accept_request(Request $request)
     {
         try {
-            if (Gate::allows('isAccepted', [$request->user_to])) {
+            if (Gate::allows('isFriends', [$request->user_to])) {
                 $user = $request->user();
 
                 $friend_accept = FriendsModel::where('status', FriendsEnum::Request)->where('user_1', $user->id)

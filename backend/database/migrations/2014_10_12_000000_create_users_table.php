@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    /**
+     * Enums for this table
+     */
+
+    private $roles = ['default', 'premium', 'admin'];
+
+
     /**
      * Run the migrations.
      *
@@ -20,7 +28,7 @@ return new class extends Migration
             $table->text('bio')->nullable(true)->default(null);
             $table->string('image')->nullable(true)->default(null);
             $table->string('provider');
-            $table->enum('role', ['default', 'premium', 'admin']);
+            $table->enum('role', $this->roles);
             $table->boolean('banned')->default(false);
             $table->string('age')->nullable(true)->default(null);
             $table->string('gender')->nullable(true)->default(null);

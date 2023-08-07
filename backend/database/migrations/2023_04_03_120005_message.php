@@ -6,6 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    /**
+     * Enums for this table
+     */
+
+    private $status = ['sent', 'seen', 'deleted'];
+
+
     /**
      * Run the migrations.
      *
@@ -18,6 +26,7 @@ return new class extends Migration
             $table->foreignUuid('user_from');
             $table->foreignUuid('user_to');
             $table->string('text', 250);
+            $table->enum('status', $this->status);
             $table->timestamps();
         });
     }

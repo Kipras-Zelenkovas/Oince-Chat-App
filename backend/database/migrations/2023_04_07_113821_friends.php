@@ -7,6 +7,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    /**
+     * Enums for this table
+     */
+
+    private $status = ['request', 'friends', 'blocked'];
+
+
     /**
      * Run the migrations.
      *
@@ -18,7 +26,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('user_1');
             $table->foreignUuid('user_2');
-            $table->enum('status', ['request', 'friends', 'blocked']);
+            $table->enum('status', $this->status);
             $table->foreignUuid('user_banned')->nullable()->default(null);
             $table->timestamps();
         });
